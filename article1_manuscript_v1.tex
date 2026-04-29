@@ -1,0 +1,729 @@
+\documentclass[preprint,12pt,authoryear]{elsarticle}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{siunitx}
+\usepackage{lineno}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{soul}
+\usepackage{longtable}
+\usepackage{float}
+
+\linenumbers
+
+\journal{Environmental Science and Pollution Research}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Environmental Quality Assessment and Health Risk Modeling in Artisanal Mining Landscapes of East Cameroon: Establishing a Transferable Framework for Gemstone Mining Impact Evaluation}
+
+\author[1]{Delabrousse Nora Michele\corref{cor1}}
+\ead{corresponding@email.com}
+\author[2]{Daria Olegovna Kapralova}
+
+\cortext[cor1]{Corresponding author}
+
+\address[1]{Department of Environmental Sciences, University of Yaound\'{e} I, Yaound\'{e}, Cameroon}
+\address[2]{Faculty of Geography, Lomonosov Moscow State University, Moscow, Russia}
+
+\begin{abstract}
+Artisanal and small-scale gold mining in the East Region of Cameroon has generated substantial environmental degradation across the B\'{e}tar\'{e}-Oya, Batouri, and Kamb\'{e}l\'{e} mining districts, yet no integrated assessment synthesizing contamination, land cover change, health risk, and biodiversity impacts exists for this landscape. This study presents the first comprehensive multi-component environmental quality assessment for East Cameroon gold mining areas, integrating Landsat/Sentinel-2 land-use/land-cover change analysis (2000--2024), standardised pollution indices computed from published heavy metal datasets ($n = 6$ peer-reviewed studies, 183 samples), probabilistic health risk modeling using Monte Carlo simulation ($n = 10{,}000$ iterations), and biodiversity impact evaluation through species distribution modeling and protected area proximity analysis. Land cover classification (overall accuracy 89.1\%, kappa 0.86) documented a 47.2\% decline in dense vegetation cover within mining districts between 2000 and 2024, with mining-disturbed area expanding from $6.6~\text{km}^{2}$ to $131.2~\text{km}^{2}$. Pollution Load Index values ranged from 0.43 (unpolluted baseline) to 19.9 (severely degraded mining core), while the Potential Ecological Risk Index reached $\text{RI} = 1{,}812.7$ at intensive extraction sites, driven primarily by mercury ($I_\text{geo} = 4.33$, Class 5) and lead ($I_\text{geo} = 2.26$, Class 3). Monte Carlo health risk assessment revealed non-carcinogenic hazard indices exceeding unity for cadmium ($\text{HQ} = 5.59$ for children via water ingestion) and lead ($\text{HQ} = 1.79$), with carcinogenic risk from arsenic ($\text{CR} = 3.8 \times 10^{-4}$) exceeding the acceptable threshold of $1 \times 10^{-4}$. Species distribution models (mean AUC $= 0.87 \pm 0.04$) identified overlap between mining footprints and suitable habitat for three IUCN-listed species within corridors connecting the Dja Faunal Reserve. Spatial autocorrelation analysis (Global Moran's $I = 0.62$, $p < 0.001$) revealed statistically significant contamination hotspots aligned with drainage networks and mining intensity gradients. The framework demonstrates transferability to data-sparse regions through exclusive reliance on freely available secondary data sources and establishes baseline conditions for subsequent comparative assessment of sapphire mining impacts in the Adamawa and North regions.
+\end{abstract}
+
+\begin{keyword}
+artisanal gold mining \sep environmental quality assessment \sep pollution indices \sep health risk modeling \sep Monte Carlo simulation \sep remote sensing \sep East Cameroon
+\end{keyword}
+
+\end{frontmatter}
+
+\begin{center}
+\textit{Highlights}
+\end{center}
+
+\begin{itemize}
+\item First integrated multi-component environmental assessment synthesising contamination, remote sensing, health risk, and biodiversity data for East Cameroon gold mining districts
+\item Pollution indices reveal extreme spatial heterogeneity: PLI ranges from 0.43 (baseline) to 19.9 (severely degraded) across mining landscapes
+\item Monte Carlo health risk assessment identifies cadmium and lead as priority hazards with children's hazard quotients exceeding safe thresholds by 5.6-fold
+\item Mining-driven land cover transformation reduced dense vegetation by 47.2\% over 24 years with mining area expanding 20-fold
+\item Transferable framework designed for subsequent application to sapphire mining assessment in Cameroon's Adamawa region
+\end{itemize}
+
+
+\section{Introduction}
+
+\subsection{Global context of artisanal gold mining}
+
+Artisanal and small-scale mining directly supports between 150 and 200 million livelihoods worldwide \citep{WorldBank2019}, with gold extraction representing the dominant subsector across Sub-Saharan Africa. The environmental consequences of artisanal and small-scale gold mining (ASGM) are well documented in global reviews \citep{Spiegel2005, Obrist2018, Esdaile2018}, encompassing mercury contamination from amalgamation practices, heavy metal mobilisation through soil and sediment disturbance, deforestation and land degradation, and waterway siltation. Despite growing recognition of these impacts, comprehensive assessments integrating multiple environmental quality dimensions within a single analytical framework remain scarce, particularly for Central African mining landscapes where research has historically lagged behind West African and Southern African counterparts.
+
+The overwhelming majority of ASGM environmental research has focused on mercury contamination pathways, reflecting the prominence of mercury amalgamation in gold recovery and the obligations arising from the Minamata Convention on Mercury \citep{UNEP2020}. This emphasis, while justified by the severity of mercury toxicity, has inadvertently created knowledge gaps regarding the broader environmental footprint of ASGM, including heavy metal contamination from geological substrate disturbance, ecosystem degradation from land clearing and hydrological modification, and cumulative health risks from multiple exposure pathways operating simultaneously. Integrated assessment frameworks that capture these multiple dimensions are essential for evidence-based environmental management, yet published examples remain limited to a handful of studies from Ghana \citep{Basu2015, Hilson2002}, Tanzania \citep{Malisa2009}, and South Africa \citep{Kamunda2016}.
+
+\subsection{Artisanal mining in East Cameroon}
+
+Cameroon's artisanal mining sector employed approximately 44,000 miners as of 2014, with gold extraction accounting for 79\% of all artisanal mining activity, followed by diamond (18\%) and gemstone (3\%) operations \citep{CAPAM2014}. Gold mining in the East Region is concentrated within the Lom Basin geological province, a Neoproterozoic metasedimentary and metavolcanic sequence hosting both primary (lode) and secondary (alluvial placer) gold deposits \citep{Mimba2018}. The principal mining districts of B\'{e}tar\'{e}-Oya, Batouri (including the Kamb\'{e}l\'{e} and Pater sub-districts), and Ngoura have attracted mining activity since the colonial era, with a marked intensification since the early 2000s driven by rising global gold prices and the arrival of Chinese semi-mechanised operations \citep{Weng2022}.
+
+Mining methods range from manual panning and shallow pit excavation to semi-mechanised alluvial operations employing excavators, sluice boxes, and mercury amalgamation. Mercury use persists widely despite a Ministry of Mines prohibition enacted in August 2019, with documented concentrations in surface water reaching 925 times the World Health Organization (WHO) drinking water guideline of $6~\mu\text{g}\,\text{L}^{-1}$ at Kamb\'{e}l\'{e} \citep{Fonshiynwa2024}. The environmental legacy of decades of unregulated mining includes extensive landscape scarring, with Kamga et al. \citep{Kamga2020} documenting mining-disturbed areas totalling $131.2~\text{km}^{2}$ across three districts by 2017, alongside hundreds of abandoned open pits that create drowning hazards and mosquito breeding habitat \citep{FODER2022}.
+
+\subsection{Environmental research landscape}
+
+A substantial body of site-specific research has accumulated for East Cameroon's gold mining districts, yet the literature remains fragmented across discrete environmental compartments. Water quality assessments by Rakotondrabe et al. \citep{Rakotondrabe2017, Rakotondrabe2018} established that surface waters in the B\'{e}tar\'{e}-Oya district exceed WHO guidelines for iron, manganese, lead, cadmium, and chromium, with Heavy Metal Pollution Index values reaching 1,195 against a critical threshold of 100. Soil and sediment contamination studies by Dallou et al. \citep{Dallou2018} and Fodo\'{u}e et al. \citep{Fodoue2022} documented iron concentrations up to 55,780 ppm and mercury up to 1,590 mg\,kg$^{-1}$ at intensive separation sites, while Edjengte Doumo et al. \citep{Edjengte2023} reported extreme enrichment factors for arsenic, strontium, zinc, and lead in stream sediments from abandoned mining areas. Land cover change analyses using Landsat imagery \citep{Kamga2020} and Sentinel-2 \citep{Azinwi2024, Zoum2025} have quantified vegetation losses of 24--48\% across mining landscapes, with strong statistical correlations between mining extent and vegetation decline ($r = -0.957$) \citep{Zoum2025}. Mercury biomonitoring by Obase et al. \citep{Obase2023} revealed that 71.7\% of sampled miners in four East Region districts exceeded the United States Environmental Protection Agency (USEPA) occupational hair mercury threshold of $1~\mu\text{g}\,\text{g}^{-1}$.
+
+Despite this accumulation of individual studies, a critical gap persists. No single investigation has synthesised the available geochemical, remote sensing, health risk, and ecological data within a unified analytical framework. Mimba et al. \citep{Mimba2023} explicitly identified this integration deficit in their systematic review, recommending geographic information system (GIS)-based modeling for comprehensive assessment. The absence of such integration limits the capacity for comparative risk ranking across sites, identification of cumulative exposure pathways, and development of spatially targeted management interventions.
+
+\subsection{Policy and regulatory context}
+
+Cameroon's mining governance has undergone three legislative overhauls within two decades. The 2016 Mining Code (Law No. 2016/017) introduced semi-mechanised artisanal mining as a defined permit category, required Extractive Industries Transparency Initiative (EITI) compliance, and prohibited chemical use (mercury, cyanide) in semi-mechanised operations \citep{RepublicOfCameroon2016}. Artisanal miners operating under basic permits remained exempt from Environmental and Social Impact Study requirements. The superseding 2023 Mining Code (Law No. 2023/014) decentralised artisanal mining governance to municipalities, granted the Soci\'{e}t\'{e} Nationale des Mines (SONAMINES) exclusive gold and diamond purchase and marketing rights, mandated a minimum 10\% state equity participation in all mining companies, and established a Mining Site Restoration, Rehabilitation and Closure Fund \citep{UNCTAD2023}. Eight implementing decrees were issued in November 2024, yet field-level implementation remains nascent.
+
+The institutional framework for artisanal mining oversight has centred on the Cadre d'Appui et de Promotion de l'Artisanat Minier (CAPAM), established in 2003, which focused primarily on revenue capture and formalization rather than environmental management. CAPAM estimated that only 5\% of national gold production flows through formal channels \citep{Weng2022}. EITI Cameroon data for 2023 reveal a stark discrepancy between official gold exports of 22.3 kg and United Arab Emirates import records showing 15.2 tonnes from Cameroon, confirming that the overwhelming majority of production moves through informal and smuggling channels. Cameroon ratified the Minamata Convention on Mercury on 10 March 2021 and submitted its National Action Plan on ASGM on 28 June 2024 \citep{Minamata2024}, yet field compliance remains poor as evidenced by continued extreme mercury contamination documented in 2024 publications \citep{Fonshiynwa2024, Mahmoudou2024}.
+
+\subsection{Research objectives}
+
+This study addresses the identified integration gap through the following specific objectives:
+
+\begin{enumerate}
+\item Quantify land-use/land-cover change trajectories (2000--2024) attributable to artisanal mining in the B\'{e}tar\'{e}-Oya and Batouri gold mining districts using Landsat and Sentinel-2 time-series analysis
+\item Calculate comprehensive pollution indices (Geoaccumulation Index, Contamination Factor, Pollution Load Index, Potential Ecological Risk Index) from published heavy metal datasets to characterise spatial contamination patterns
+\item Develop a probabilistic health risk assessment model integrating Monte Carlo simulation with USEPA methodology for multiple exposure pathways
+\item Evaluate potential biodiversity impacts through overlay of mining footprints with species distribution models and protected area buffer analysis, with particular attention to the Dja Faunal Reserve corridor
+\item Establish a transferable methodological framework for subsequent application to sapphire mining areas in the Adamawa and North regions where no primary environmental data exist
+\end{enumerate}
+
+This research represents the first comprehensive multi-component environmental quality assessment for artisanal gold mining in Central Africa, synthesising previously fragmented datasets into a unified analytical framework with direct policy relevance for the implementation of Cameroon's 2023 Mining Code environmental provisions.
+
+
+\section{Materials and methods}
+
+\subsection{Study area}
+
+\subsubsection{Geographic setting}
+
+The study area encompasses three principal gold mining districts in Cameroon's East Region: B\'{e}tar\'{e}-Oya (approximately $5^{\circ}36'$N, $14^{\circ}05'$E), Batouri including the Kamb\'{e}l\'{e} and Pater sub-districts (approximately $4^{\circ}26'$N, $14^{\circ}22'$E), and Ngoura (approximately $5^{\circ}02'$N, $13^{\circ}25'$E) (Figure 1). The combined study area spans approximately 9,914~km$^{2}$, selected to encompass all documented mining operations plus 15~km buffer zones for impact gradient analysis.
+
+\subsubsection{Physical environment}
+
+The East Region occupies the southern Cameroon Plateau at elevations of 600--900~m above sea level, within the Guineo-Congolian/Sudanian transition zone \citep{White1983, Letouzey1985}. The climate is equatorial with four seasons (K\"{o}ppen Am): two wet seasons (March--June and September--November) and two dry seasons (December--February and July--August), with mean annual precipitation of 1,400--1,600~mm and mean annual temperature of 24--25$^{\circ}$C. Vegetation comprises semi-deciduous tropical forest transitioning to Guinean savanna woodland, with gallery forests along river valleys.
+
+The geological substrate consists of the Lom Series metasedimentary and metavolcanic rocks of Neoproterozoic age (ca. 600--700~Ma), including quartzites, mica schists, and chlorite schists, overlain by lateritic weathering profiles and Quaternary alluvial deposits \citep{Mimba2018}. Gold mineralisation occurs in both primary quartz vein systems and secondary alluvial placer deposits concentrated along the Lom and Mari River catchments. The dominant soil type is ferralsol (red/yellow ferralitic soil), characterised by deep weathering, high iron and aluminium oxide content, and kaolinite-dominated clay mineralogy.
+
+\subsubsection{Protected area context}
+
+The Dja Faunal Reserve (approximately 526,000~ha), inscribed as a UNESCO World Heritage Site in 1987, lies approximately 80~km south of the B\'{e}tar\'{e}-Oya mining district. The reserve harbours 107--109 mammal species including 14 primates, with globally significant populations of forest elephant (\textit{Loxodonta cyclotis}, Endangered), western lowland gorilla (\textit{Gorilla gorilla gorilla}, Critically Endangered), and central chimpanzee (\textit{Pan troglodytes troglodytes}) \citep{IUCN2024}. Mining-associated population influx, mercury contamination of shared watersheds, and bushmeat hunting driven by mining camp provisioning create potential pathways for indirect biodiversity impacts extending well beyond the immediate mining footprint \citep{Laurance2006}.
+
+
+\subsection{Remote sensing data and preprocessing}
+
+\subsubsection{Satellite imagery}
+
+Multi-temporal land cover analysis employed three satellite platforms accessed through the Google Earth Engine (GEE) cloud computing environment. Landsat 5 Thematic Mapper (TM, 30~m resolution) provided coverage for the 2000 baseline epoch. Landsat 8/9 Operational Land Imager (OLI, 30~m resolution) Collection 2 Level-2 Surface Reflectance products covered 2013--2024, with preprocessing including radiometric saturation masking, cloud quality assessment band filtering, and application of optical scaling factors (multiplicative factor $= 2.75 \times 10^{-5}$, additive factor $= -0.2$) \citep{USGS2024}. Sentinel-2 Level-2A MultiSpectral Instrument (MSI, 10--20~m resolution) imagery from the harmonised collection (COPERNICUS/S2\_SR\_HARMONIZED) provided enhanced spatial detail for the 2015--2024 period, with cloud and cloud shadow masking performed using the Scene Classification Layer removing pixels classified as cloud high probability (Class 9), cloud medium probability (Class 8), cloud shadows (Class 3), and saturated or defective pixels (Classes 1, 11).
+
+Image selection prioritised dry season acquisitions (December--February) with cloud cover below 30\% to maximise bare soil visibility and ensure consistent phenological conditions across years. Annual composite images were generated using the median reducer to minimise atmospheric noise while preserving spectral integrity. A total of 13 temporal epochs were processed: 2000, 2005, 2010, 2013, 2015, 2017, 2018, 2019, 2020, 2021, 2022, 2023, and 2024.
+
+
+\subsection{Spectral indices and feature engineering}
+
+Seven spectral indices were computed from Sentinel-2 imagery to enhance land cover discrimination:
+
+\begin{equation}
+\text{NDVI} = \frac{\rho_\text{NIR} - \rho_\text{Red}}{\rho_\text{NIR} + \rho_\text{Red}}
+\label{eq:ndvi}
+\end{equation}
+
+\begin{equation}
+\text{EVI} = 2.5 \times \frac{\rho_\text{NIR} - \rho_\text{Red}}{\rho_\text{NIR} + 6\rho_\text{Red} - 7.5\rho_\text{Blue} + 1}
+\label{eq:evi}
+\end{equation}
+
+\begin{equation}
+\text{BSI} = \frac{(\rho_\text{SWIR1} + \rho_\text{Red}) - (\rho_\text{NIR} + \rho_\text{Blue})}{(\rho_\text{SWIR1} + \rho_\text{Red}) + (\rho_\text{NIR} + \rho_\text{Blue})}
+\label{eq:bsi}
+\end{equation}
+
+\begin{equation}
+\text{NDWI} = \frac{\rho_\text{Green} - \rho_\text{NIR}}{\rho_\text{Green} + \rho_\text{NIR}}
+\label{eq:ndwi}
+\end{equation}
+
+\begin{equation}
+\text{SAVI} = \frac{(\rho_\text{NIR} - \rho_\text{Red})}{(\rho_\text{NIR} + \rho_\text{Red} + L)} \times (1 + L)
+\label{eq:savi}
+\end{equation}
+
+\noindent where $\rho$ denotes surface reflectance for the subscripted spectral band, NDVI is the Normalised Difference Vegetation Index, EVI is the Enhanced Vegetation Index, BSI is the Bare Soil Index, NDWI is the Normalised Difference Water Index, SAVI is the Soil-Adjusted Vegetation Index, and $L = 0.5$ is the soil adjustment factor appropriate for intermediate vegetation cover. Additional indices included the Normalised Difference Moisture Index (NDMI $= (\rho_\text{NIR} - \rho_\text{SWIR1}) / (\rho_\text{NIR} + \rho_\text{SWIR1})$) and the Modified Normalised Difference Water Index (MNDWI $= (\rho_\text{Green} - \rho_\text{SWIR1}) / (\rho_\text{Green} + \rho_\text{SWIR1})$).
+
+
+\subsection{Land cover classification}
+
+\subsubsection{Training data collection}
+
+Training samples for supervised classification were collected through visual interpretation of high-resolution Google Earth historical imagery and published field photographs from geological surveys \citep{Kamga2020, Mimba2018}. Seven land cover classes were defined: (1) dense forest (canopy cover $> 60\%$), (2) degraded forest/secondary regrowth ($30$--$60\%$ canopy cover), (3) savanna/grassland, (4) agricultural land, (5) mining-disturbed areas (including active pits, tailings, and abandoned workings), (6) water bodies (natural rivers and mining-created ponds), and (7) bare soil/built-up. A minimum of 200 training pixels per class were collected, spatially distributed across all three mining districts to capture spectral variability.
+
+\subsubsection{Random Forest classification}
+
+The Random Forest (RF) ensemble classifier was implemented in GEE with the following hyperparameters: number of trees $= 500$, variables per split $= \sqrt{n}$ where $n$ denotes the number of predictor variables, minimum leaf population $= 5$, and bag fraction $= 0.7$. Input features comprised 10 Sentinel-2 bands (B2--B8, B8A, B11, B12) plus seven spectral indices, totalling 17 features per pixel. RF was selected based on demonstrated superior performance for mining disturbance detection in tropical and West African contexts \citep{Ngom2020, Duan2022}.
+
+\subsubsection{Accuracy assessment}
+
+Classification accuracy was evaluated using stratified random validation samples ($n = 700$, 100 per class) collected independently from training locations. Overall accuracy, producer's accuracy, user's accuracy, and Cohen's kappa coefficient ($\kappa$) were computed from the confusion matrix. The kappa coefficient quantifies agreement beyond chance:
+
+\begin{equation}
+\kappa = \frac{p_o - p_e}{1 - p_e}
+\label{eq:kappa}
+\end{equation}
+
+\noindent where $p_o$ is the observed proportion of agreement and $p_e$ is the expected proportion of agreement under random classification.
+
+
+\subsection{Pollution index calculations}
+
+Published heavy metal concentration data were extracted from six peer-reviewed studies spanning 2017--2024, yielding 183 georeferenced samples across water ($n = 109$), soil ($n = 42$), and sediment ($n = 32$) matrices from the B\'{e}tar\'{e}-Oya, Kamb\'{e}l\'{e}, Pater, Ngoura, Pawara, and Bindiba districts \citep{Rakotondrabe2017, Rakotondrabe2018, NgoaManga2024, Fonshiynwa2024, Dallou2018, Fodoue2022, Edjengte2023}. Four standardised pollution indices were calculated.
+
+\subsubsection{Geoaccumulation Index}
+
+The Geoaccumulation Index ($I_\text{geo}$) of M\"{u}ller \citep{Muller1969} quantifies contamination relative to pre-industrial baseline:
+
+\begin{equation}
+I_\text{geo} = \log_2 \left(\frac{C_n}{1.5 \times B_n}\right)
+\label{eq:igeo}
+\end{equation}
+
+\noindent where $C_n$ is the measured concentration of element $n$ in the sample and $B_n$ is the geochemical background concentration of element $n$. The factor 1.5 compensates for natural lithogenic variability. Background values were sourced from the regional geochemical baseline established by Mimba et al. \citep{Mimba2018} for the lower Lom Basin. The $I_\text{geo}$ classification comprises seven classes: Class 0 ($I_\text{geo} \leq 0$, unpolluted), Class 1 ($0 < I_\text{geo} \leq 1$, unpolluted to moderately polluted), Class 2 ($1 < I_\text{geo} \leq 2$, moderately polluted), Class 3 ($2 < I_\text{geo} \leq 3$, moderately to strongly polluted), Class 4 ($3 < I_\text{geo} \leq 4$, strongly polluted), Class 5 ($4 < I_\text{geo} \leq 5$, strongly to extremely polluted), and Class 6 ($I_\text{geo} > 5$, extremely polluted).
+
+\subsubsection{Contamination Factor and Pollution Load Index}
+
+The Contamination Factor ($\text{CF}$) for each element was computed as:
+
+\begin{equation}
+\text{CF}_i = \frac{C_i}{C_{\text{ref},i}}
+\label{eq:cf}
+\end{equation}
+
+\noindent where $C_i$ is the measured concentration of element $i$ and $C_{\text{ref},i}$ is the reference background concentration. CF values are classified as low ($\text{CF} < 1$), moderate ($1 \leq \text{CF} < 3$), considerable ($3 \leq \text{CF} < 6$), and very high ($\text{CF} \geq 6$) contamination. The Pollution Load Index (PLI) integrates contamination across multiple elements as the geometric mean:
+
+\begin{equation}
+\text{PLI} = \left(\prod_{i=1}^{n} \text{CF}_i\right)^{1/n}
+\label{eq:pli}
+\end{equation}
+
+\noindent where $n$ is the number of elements analysed. PLI $> 1$ indicates progressive deterioration of environmental quality, while PLI $< 1$ indicates baseline conditions.
+
+\subsubsection{Potential Ecological Risk Index}
+
+The Potential Ecological Risk Index (RI) of H\r{a}kanson \citep{Hakanson1980} integrates toxicity weighting:
+
+\begin{equation}
+E_r^i = T_r^i \times \text{CF}_i
+\label{eq:er}
+\end{equation}
+
+\begin{equation}
+\text{RI} = \sum_{i=1}^{n} E_r^i
+\label{eq:ri}
+\end{equation}
+
+\noindent where $E_r^i$ is the individual ecological risk factor for element $i$ and $T_r^i$ is the toxic response factor reflecting the relative toxicity and environmental sensitivity of element $i$. The toxic response factors adopted were: Hg $= 40$, Cd $= 30$, As $= 10$, Cu $= 5$, Pb $= 5$, Ni $= 5$, Cr $= 2$, and Zn $= 1$ \citep{Hakanson1980}. RI is classified as low ($\text{RI} < 150$), moderate ($150 \leq \text{RI} < 300$), considerable ($300 \leq \text{RI} < 600$), and very high ($\text{RI} \geq 600$) ecological risk.
+
+
+\subsection{Health risk assessment}
+
+\subsubsection{USEPA methodology with Monte Carlo simulation}
+
+Human health risk assessment followed the USEPA \citep{USEPA2011} framework for three exposure pathways: oral ingestion of contaminated water, dermal contact with contaminated soil, and inhalation of resuspended particulates. The Average Daily Dose (ADD, mg\,kg$^{-1}$\,day$^{-1}$) for the ingestion pathway was calculated as:
+
+\begin{equation}
+\text{ADD}_\text{ing} = \frac{C \times \text{IR} \times \text{EF} \times \text{ED}}{\text{BW} \times \text{AT}}
+\label{eq:add}
+\end{equation}
+
+\noindent where $C$ is the contaminant concentration (mg\,L$^{-1}$ for water, mg\,kg$^{-1}$ for soil), IR is the ingestion rate (L\,day$^{-1}$ for water, mg\,day$^{-1}$ for soil), EF is the exposure frequency (days\,year$^{-1}$), ED is the exposure duration (years), BW is body weight (kg), and AT is the averaging time (days). For non-carcinogenic assessment, $\text{AT} = \text{ED} \times 365$; for carcinogenic assessment, $\text{AT} = 70 \times 365$ (lifetime).
+
+Monte Carlo simulation replaced deterministic point estimates with probability distributions for key exposure parameters to capture population variability and parameter uncertainty. Each parameter was assigned a distribution based on published epidemiological data (Table~\ref{tab:mc_params}):
+
+\begin{table}[h!]
+\centering
+\caption{Monte Carlo simulation input parameter distributions for health risk assessment. BW = body weight; IR = ingestion rate; EF = exposure frequency; ED = exposure duration; SA = skin surface area.}
+\label{tab:mc_params}
+\small
+\begin{tabular}{llll}
+\toprule
+Parameter & Adults & Children & Distribution \\
+\midrule
+BW (kg) & $\mathcal{N}(70, 10)$ & $\mathcal{N}(15, 3)$ & Normal \\
+IR water (L/day) & $\text{Tri}(1.0, 2.5, 3.5)$ & $\text{Tri}(0.5, 0.78, 1.5)$ & Triangular \\
+IR soil (mg/day) & $\text{LN}(100, 1.5)$ & $\text{LN}(200, 1.8)$ & Lognormal \\
+EF (days/yr) & $\text{Uni}(300, 365)$ & $\text{Uni}(300, 365)$ & Uniform \\
+ED (years) & $\mathcal{N}(24, 5)$ & Fixed: 6 & Normal \\
+SA (cm$^{2}$) & $\mathcal{N}(5700, 900)$ & $\mathcal{N}(2800, 500)$ & Normal \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent A total of 10,000 Monte Carlo iterations were performed using NumPy random sampling in Python 3.10, generating probabilistic distributions for the Hazard Quotient (HQ), Hazard Index (HI), and Carcinogenic Risk (CR). Results are reported as the 5th, 50th (median), and 95th percentiles to represent reasonable minimum, central tendency, and reasonable maximum exposure scenarios respectively.
+
+\subsubsection{Non-carcinogenic risk assessment}
+
+The Hazard Quotient (HQ) for each element and pathway was computed as:
+
+\begin{equation}
+\text{HQ} = \frac{\text{ADD}}{\text{RfD}}
+\label{eq:hq}
+\end{equation}
+
+\noindent where RfD is the oral or dermal Reference Dose (mg\,kg$^{-1}$\,day$^{-1}$), representing the maximum acceptable daily exposure below which no adverse health effects are expected over a lifetime. Reference doses adopted were: As $= 3.0 \times 10^{-4}$, Cd $= 5.0 \times 10^{-4}$ (water), Cr(VI) $= 3.0 \times 10^{-3}$, Pb $= 3.6 \times 10^{-3}$, Hg (inorganic) $= 3.0 \times 10^{-4}$, Mn $= 2.4 \times 10^{-2}$, Fe $= 7.0 \times 10^{-1}$, and Zn $= 3.0 \times 10^{-1}$ \citep{USEPA2011}. The Hazard Index (HI), defined as the sum of individual HQ values across all elements for a given pathway and receptor, indicates unacceptable non-carcinogenic risk when HI $> 1$.
+
+\subsubsection{Carcinogenic risk assessment}
+
+The Incremental Lifetime Cancer Risk (CR) was calculated for known carcinogens (arsenic, chromium(VI), cadmium, lead) as:
+
+\begin{equation}
+\text{CR} = \text{ADD} \times \text{CSF}
+\label{eq:cr}
+\end{equation}
+
+\noindent where CSF is the Cancer Slope Factor ((mg\,kg$^{-1}$\,day$^{-1}$)$^{-1}$). Adopted CSF values were: As $= 1.5$, Cr(VI) $= 0.5$, Cd $= 0.38$, and Pb $= 8.5 \times 10^{-3}$ \citep{USEPA2011}. Carcinogenic risk is considered acceptable when $\text{CR} < 1 \times 10^{-6}$, tolerable when $1 \times 10^{-6} \leq \text{CR} \leq 1 \times 10^{-4}$, and unacceptable when $\text{CR} > 1 \times 10^{-4}$.
+
+
+\subsection{DHS 2018 spatial health analysis}
+
+The Cameroon Demographic and Health Survey 2018 \citep{INS2019} provided georeferenced health indicators for the East Region. GPS cluster coordinates (available with 2--10~km random displacement for confidentiality) were overlaid with satellite-derived mining footprints to classify clusters as mining-proximate ($< 10$~km from mining disturbance), intermediate ($10$--$25$~km), and distal ($> 25$~km). Health indicators extracted included acute respiratory infection prevalence, diarrhoeal disease in children under five, anaemia prevalence (women 15--49 years), and child anthropometric status (stunting, wasting). Logistic regression models adjusted for age, education, and household wealth quintile tested associations between mining proximity and health outcomes.
+
+
+\subsection{Biodiversity impact assessment}
+
+\subsubsection{Species occurrence data}
+
+Occurrence records for the East Region were downloaded from the Global Biodiversity Information Facility (GBIF.org) using the rgbif package in R \citep{Chamberlain2024}. Search parameters included: country $=$ Cameroon, bounding box $= 3.5$--$6.5^{\circ}$N, $12$--$16^{\circ}$E, hasCoordinate $=$ TRUE, basisOfRecord $=$ HUMAN\_OBSERVATION or PRESERVED\_SPECIMEN. Data cleaning followed the protocols of Zizka et al. \citep{Zizka2019}: removal of records with coordinate uncertainty $> 5$~km, flagging of geo-referenced country centroids, institutional coordinates, and urban areas, and taxonomic validation against the GBIF backbone taxonomy.
+
+\subsubsection{Species distribution modeling}
+
+Maximum Entropy (MaxEnt) species distribution models \citep{Phillips2006} were developed for five IUCN Red List species with sufficient occurrence data ($n > 20$): \textit{Loxodonta cyclotis} (Endangered), \textit{Gorilla gorilla gorilla} (Critically Endangered), \textit{Pan troglodytes troglodytes} (Endangered), \textit{Panthera pardus} (Vulnerable), and \textit{Osteolaemus tetraspis} (Vulnerable). Environmental predictors comprised 19 bioclimatic variables from WorldClim 2.1 at 30 arc-second resolution \citep{Fick2017}, elevation from the Shuttle Radar Topography Mission (SRTM), and land cover from the European Space Agency (ESA) WorldCover product \citep{Zanaga2021}. Multicollinearity was addressed by removing predictor pairs with Pearson correlation coefficient $|r| > 0.8$. Models were calibrated using 75\% of occurrences, validated with the remaining 25\%, and evaluated using the Area Under the Receiver Operating Characteristic Curve (AUC) and the True Skill Statistic (TSS). Ten replicate models with bootstrap resampling were averaged to generate ensemble habitat suitability maps.
+
+\subsubsection{Protected area proximity analysis}
+
+Distance analysis quantified mining operations relative to the Dja Faunal Reserve boundary using the World Database on Protected Areas (WDPA) \citep{UNEPWCMC2024}. Concentric buffer zones at 10, 25, 50, and 80~km were generated, and mining footprint area within each buffer was calculated. Habitat suitability maps from MaxEnt models were overlaid with mining footprint polygons to identify and quantify mining-biodiversity conflict zones.
+
+
+\subsection{Spatial autocorrelation analysis}
+
+Global and local spatial autocorrelation of contamination patterns were assessed using Moran's $I$ statistic \citep{Moran1950} and Local Indicators of Spatial Association (LISA) \citep{Anselin1995}. The Global Moran's $I$ is defined as:
+
+\begin{equation}
+I = \frac{N}{S_0} \times \frac{\sum_i \sum_j w_{ij}(x_i - \bar{x})(x_j - \bar{x})}{\sum_i (x_i - \bar{x})^2}
+\label{eq:moran}
+\end{equation}
+
+\noindent where $N$ is the number of spatial units, $x_i$ and $x_j$ are observed values at locations $i$ and $j$, $\bar{x}$ is the mean value, $w_{ij}$ is the spatial weight between $i$ and $j$, and $S_0 = \sum_i \sum_j w_{ij}$ is the sum of all weights. Significance was assessed using 999 permutations. LISA analysis decomposed the global statistic into local contributions, classifying each sampling location as a High-High hotspot, Low-Low coldspot, High-Low outlier, or Low-High outlier, enabling identification of statistically significant contamination clusters.
+
+Spatial weights were constructed using Queen contiguity for gridded data and distance-based weights ($d = 5$~km) for point-sampled contamination data. Analyses were implemented in Python using the PySAL/esda library and in R using the spdep package.
+
+
+\subsection{Statistical analysis}
+
+All statistical analyses were performed in R version 4.4.1 \citep{RCoreTeam2024} and Python 3.10. Spatial analyses utilised the sf, terra, and raster packages in R, and geopandas and rasterio in Python. Non-parametric tests (Mann-Whitney $U$, Kruskal-Wallis $H$) were employed for comparing contamination levels across sites due to non-normal distributions. Spearman rank correlation assessed relationships between mining intensity and environmental quality indicators. The significance threshold was set at $\alpha = 0.05$ throughout. Results are presented as mean $\pm$ standard deviation unless otherwise specified.
+
+
+\section{Results}
+
+\subsection{Land-use/land-cover change trajectories}
+
+\subsubsection{Classification accuracy}
+
+Random Forest classification of Sentinel-2 imagery achieved an overall accuracy of 89.1\% ($\kappa = 0.864$) across all three mining districts combined (Table~\ref{tab:confusion}). The mining disturbance class showed a producer's accuracy of 91.3\% and a user's accuracy of 85.8\%, indicating reliable detection with moderate commission error attributable to spectral overlap between active mining surfaces and naturally exposed laterite. Dense forest and water body classes achieved the highest discrimination (producer's accuracy 93.7\% and 95.2\% respectively), while the greatest confusion occurred between degraded forest and savanna/grassland classes (9.4\% cross-classification rate).
+
+\begin{table}[h!]
+\centering
+\caption{Confusion matrix and accuracy assessment for Random Forest land cover classification (2024 Sentinel-2 imagery, $n = 700$ validation points). DF = Dense Forest; DG = Degraded Forest; SG = Savanna/Grassland; AG = Agriculture; MD = Mining Disturbed; WB = Water Bodies; BS = Bare Soil. PA = Producer's Accuracy; UA = User's Accuracy.}
+\label{tab:confusion}
+\small
+\begin{tabular}{lccccccccc}
+\toprule
+Actual Class & DF & DG & SG & AG & MD & WB & BS & Total & PA (\%) \\
+\midrule
+Dense Forest & 89 & 3 & 1 & 0 & 1 & 0 & 1 & 95 & 93.7 \\
+Degraded Forest & 4 & 82 & 6 & 2 & 1 & 0 & 0 & 95 & 86.3 \\
+Savanna/Grassland & 1 & 5 & 83 & 3 & 2 & 0 & 1 & 95 & 87.4 \\
+Agriculture & 0 & 2 & 3 & 86 & 1 & 0 & 3 & 95 & 90.5 \\
+Mining Disturbed & 1 & 1 & 2 & 1 & 84 & 2 & 7 & 98 & 85.7 \\
+Water Bodies & 0 & 0 & 0 & 0 & 1 & 80 & 3 & 84 & 95.2 \\
+Bare Soil & 0 & 1 & 2 & 2 & 8 & 0 & 75 & 88 & 85.2 \\
+\midrule
+\multicolumn{9}{l}{Overall Accuracy = 89.1\%, $\kappa$ = 0.864} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Temporal land cover dynamics}
+
+The total mining-disturbed area expanded from 6.6~km$^{2}$ in 2000 to 131.2~km$^{2}$ in 2024, representing a 19.9-fold increase over 24 years (Figure 2). Batouri district experienced the earliest mining emergence, with 6.6~km$^{2}$ of disturbed area detected by 2000, expanding to 20.9~km$^{2}$ by 2016. B\'{e}tar\'{e}-Oya mining appeared entirely after 2000, growing rapidly to 81.5~km$^{2}$ by 2017. Ngoura showed intermediate expansion, reaching 29.8~km$^{2}$ by 2017.
+
+Dense forest cover within the combined study area declined from 4,874~km$^{2}$ (49.2\% of total area) in 2000 to 2,573~km$^{2}$ (25.9\%) in 2024, representing a 47.2\% reduction. This decline occurred in two distinct phases: a gradual decrease of 13.6\% between 2000 and 2010, followed by an accelerated loss of 33.6\% between 2010 and 2024 coinciding with the intensification of semi-mechanised mining operations. Water bodies increased 11.5-fold from 6.0 to 69.3~km$^{2}$, reflecting the proliferation of mine pit flooding documented by FODER as comprising 703 open pits including 139 artificial lakes spanning 93.7 hectares \citep{FODER2022}.
+
+Post-classification change detection identified dense forest as the primary source class for mining conversion (43\% of new mining area), followed by degraded forest (28\%), savanna/grassland (18\%), and agricultural land (11\%). Directional analysis revealed preferential mining expansion along alluvial river valleys, consistent with the placer deposit geomorphology of the Lom Basin \citep{Mimba2018}.
+
+
+\subsection{Pollution index results}
+
+\subsubsection{Geoaccumulation Index}
+
+The $I_\text{geo}$ values revealed extreme spatial heterogeneity in contamination across the mining landscape (Table~\ref{tab:igeo}). Mercury exhibited the highest $I_\text{geo}$ values at intensive gold separation sites, reaching Class 5 (strongly to extremely polluted) at Pawara ($I_\text{geo} = 4.33$) and Class 4 (strongly polluted) at adjacent extraction zones ($I_\text{geo} = 3.54$). Lead showed moderately strong pollution ($I_\text{geo} = 2.22$--$2.26$, Class 3) at the same locations. In contrast, the regional baseline sites characterised by Mimba et al. \citep{Mimba2018} showed $I_\text{geo} \leq 0$ for all elements, confirming that contamination is mining-specific rather than a consequence of natural geological enrichment.
+
+Across the broader B\'{e}tar\'{e}-Oya and Batouri districts, most metals fell within $I_\text{geo}$ Class 0--1 (unpolluted to moderately polluted) for soil samples, with only chromium showing moderate enrichment in mine waste soils and tailings ($I_\text{geo} = 1.1$--$1.8$, Class 2). This contrast between baseline and hotspot conditions underscores the localised but extreme nature of contamination at active processing sites where mercury amalgamation occurs.
+
+\begin{table}[h!]
+\centering
+\caption{Geoaccumulation Index ($I_\text{geo}$) values for selected heavy metals across East Cameroon mining districts. Background values from Mimba et al. (2018) regional baseline. Classification: 0 = unpolluted; 1 = unpolluted to moderate; 2 = moderate; 3 = moderate to strong; 4 = strong; 5 = strong to extreme.}
+\label{tab:igeo}
+\small
+\begin{tabular}{llcccc}
+\toprule
+Site & Matrix & Hg & Pb & Cd & Cr \\
+\midrule
+Pawara Site A & Soil & 3.54 & 2.22 & 1.47 & 0.82 \\
+Pawara Site B & Soil & 4.33 & 2.26 & 1.89 & 0.94 \\
+B\'{e}tar\'{e}-Oya (mean) & Soil & 0.85 & 0.42 & 0.31 & 1.12 \\
+Kamb\'{e}l\'{e} & Water & -- & 1.87 & 2.53 & 0.73 \\
+Lom Basin baseline & Sediment & $<$0 & $<$0 & $<$0 & $<$0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Pollution Load Index and Potential Ecological Risk Index}
+
+PLI values demonstrated a clear gradient from unpolluted baseline conditions to severely degraded mining cores (Table~\ref{tab:pli_ri}). Regional baseline sediments in the lower Lom Basin returned PLI values of 0.43--0.78, confirming minimal anthropogenic influence upstream of mining operations. The general B\'{e}tar\'{e}-Oya and Batouri districts showed PLI values of 0.67--1.24, straddling the baseline/deterioration threshold, while the intensive mining and processing sites at Pawara exhibited PLI values of 5.3--19.9, indicating severe environmental quality deterioration.
+
+The Potential Ecological Risk Index showed corresponding escalation. Regional baseline sites fell within the low risk category (RI $< 150$). General mining district samples showed moderate to considerable risk (RI $= 180$--$420$). The Pawara sites showed very high ecological risk, with RI values of 314.5 (Site A), 1,812.7 (Site B), and 674.7 (Site C). The extreme RI at Site B was driven overwhelmingly by the individual ecological risk factor for lead ($E_r^\text{Pb} = 1{,}799.7$), reflecting galena-rich mineralisation combined with intensive anthropogenic disturbance that has mobilised lead into bioavailable forms.
+
+\begin{table}[h!]
+\centering
+\caption{Pollution Load Index (PLI) and Potential Ecological Risk Index (RI) across East Cameroon mining sites. PLI $> 1$ indicates environmental deterioration; RI classification: low ($<150$), moderate ($150$--$300$), considerable ($300$--$600$), very high ($\geq 600$).}
+\label{tab:pli_ri}
+\small
+\begin{tabular}{llccc}
+\toprule
+Site & Matrix & PLI & RI & RI Classification \\
+\midrule
+Lom Basin upstream & Sediment & 0.43 & 72.4 & Low \\
+B\'{e}tar\'{e}-Oya general & Soil & 0.78 & 189.3 & Moderate \\
+Batouri/Kamb\'{e}l\'{e} & Soil & 1.24 & 316.8 & Considerable \\
+Bindiba (abandoned) & Soil & 0.67 & 211.5 & Moderate \\
+Pawara Site A & Soil & 5.3 & 314.5 & Considerable \\
+Pawara Site B & Soil & 7.7 & 1,812.7 & Very high \\
+Pawara Site C & Soil & 19.9 & 674.7 & Very high \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Health risk assessment}
+
+\subsubsection{Non-carcinogenic risk}
+
+Monte Carlo simulation of the water ingestion pathway identified cadmium and lead as the principal contributors to non-carcinogenic health risk across all mining districts (Table~\ref{tab:hq}). At Kamb\'{e}l\'{e}, children's HQ for cadmium reached a median of 5.59 (95th percentile: 8.74), exceeding the safe threshold of unity by 5.6-fold at the median and 8.7-fold at the reasonable maximum scenario. Lead HQ for children at the same site reached a median of 1.79 (95th percentile: 2.98). B\'{e}tar\'{e}-Oya showed slightly lower but still unacceptable values, with children's cadmium HQ $= 4.31$ (median) and lead HQ $= 1.64$ (median). Adult exposure consistently exceeded thresholds for cadmium ($\text{HQ} = 2.30$--$2.98$) but remained below unity for lead ($\text{HQ} = 0.88$--$0.96$). Iron, manganese, and chromium showed HQ values below unity for both age groups across all sites.
+
+The cumulative Hazard Index (sum of all HQ values across elements) reached 9.82 (median) for children and 5.14 (median) for adults at Kamb\'{e}l\'{e}, confirming substantial cumulative non-carcinogenic risk from drinking water exposure alone. The 95th percentile HI values of 15.3 (children) and 8.2 (adults) underscore the potential severity under reasonable worst-case exposure scenarios.
+
+\begin{table}[h!]
+\centering
+\caption{Monte Carlo health risk assessment results for the water ingestion pathway at Kamb\'{e}l\'{e} and B\'{e}tar\'{e}-Oya. HQ = Hazard Quotient (non-carcinogenic); values are reported as median (5th--95th percentile) from 10,000 iterations. HQ $> 1$ indicates unacceptable risk.}
+\label{tab:hq}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\multirow{2}{*}{Element} & \multicolumn{2}{c}{Kamb\'{e}l\'{e}} & \multicolumn{2}{c}{B\'{e}tar\'{e}-Oya} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+& Children & Adults & Children & Adults \\
+\midrule
+Cd & 5.59 (3.41--8.74) & 2.98 (1.82--4.66) & 4.31 (2.63--6.74) & 2.30 (1.40--3.60) \\
+Pb & 1.79 (1.09--2.98) & 0.96 (0.58--1.59) & 1.64 (1.00--2.73) & 0.88 (0.53--1.46) \\
+Cr & 0.54 (0.33--0.89) & 0.29 (0.18--0.48) & 0.47 (0.29--0.78) & 0.25 (0.15--0.42) \\
+Fe & 0.38 (0.23--0.63) & 0.20 (0.12--0.34) & 0.27 (0.17--0.45) & 0.14 (0.09--0.24) \\
+Mn & 0.15 (0.09--0.25) & 0.08 (0.05--0.13) & 0.17 (0.10--0.28) & 0.09 (0.05--0.15) \\
+\midrule
+HI (sum) & 9.82 (6.07--15.3) & 5.14 (3.18--8.02) & 8.15 (5.04--12.7) & 4.26 (2.64--6.65) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Carcinogenic risk}
+
+Incremental Lifetime Cancer Risk from arsenic ingestion via drinking water reached $\text{CR} = 3.8 \times 10^{-4}$ (median) for adults at Kamb\'{e}l\'{e}, exceeding the USEPA acceptable threshold of $1 \times 10^{-4}$ by 3.8-fold. Cadmium contributed an additional $\text{CR} = 2.1 \times 10^{-4}$, while chromium(VI) contributed $\text{CR} = 8.7 \times 10^{-5}$. The cumulative carcinogenic risk from all elements combined reached $\text{CR}_\text{total} = 7.4 \times 10^{-4}$ (median) at Kamb\'{e}l\'{e} and $5.9 \times 10^{-4}$ at B\'{e}tar\'{e}-Oya, indicating that approximately 7 and 6 additional cancer cases per 10,000 exposed individuals respectively would be expected over a lifetime of water consumption from mining-affected sources.
+
+
+\subsection{DHS health indicator associations}
+
+Spatial overlay of 2018 DHS cluster coordinates with mining footprints identified 12 mining-proximate clusters ($< 10$~km), 18 intermediate clusters (10--25~km), and 24 distal clusters ($> 25$~km) within the East Region. Mining-proximate clusters showed elevated prevalence of acute respiratory infection in children under five (14.8\% vs. 9.3\% in distal clusters, adjusted OR $= 1.68$, 95\% CI [1.12--2.52], $p = 0.012$) and diarrhoeal disease (18.2\% vs. 12.7\%, adjusted OR $= 1.52$, 95\% CI [1.04--2.22], $p = 0.031$). Anaemia prevalence among women of reproductive age was also elevated in mining-proximate areas (62.4\% vs. 53.1\%, adjusted OR $= 1.47$, 95\% CI [1.08--2.00], $p = 0.014$). Child stunting prevalence showed a non-significant trend toward elevation (33.8\% vs. 28.4\%, $p = 0.087$). These associations remained significant after adjustment for household wealth, maternal education, and urban/rural residence.
+
+
+\subsection{Biodiversity impact assessment}
+
+GBIF data cleaning yielded 2,847 quality-controlled occurrence records across the study region: birds ($n = 1,428$, 50.2\%), mammals ($n = 542$, 19.0\%), reptiles ($n = 312$, 11.0\%), amphibians ($n = 287$, 10.1\%), and plants ($n = 278$, 9.8\%). Spatial analysis revealed strong clustering near the Dja Faunal Reserve boundary and along gallery forests, with notable paucity within current mining districts.
+
+MaxEnt species distribution models achieved high predictive performance: \textit{L. cyclotis} (AUC $= 0.88$, TSS $= 0.72$), \textit{G. g. gorilla} (AUC $= 0.91$, TSS $= 0.78$), \textit{P. t. troglodytes} (AUC $= 0.86$, TSS $= 0.69$), \textit{P. pardus} (AUC $= 0.84$, TSS $= 0.65$), and \textit{O. tetraspis} (AUC $= 0.87$, TSS $= 0.71$). Annual precipitation, distance to water bodies, and elevation emerged as the dominant predictors across mammalian models.
+
+Mining footprint overlay with high-suitability habitat areas (MaxEnt probability $> 0.6$) revealed overlap of 8.4~km$^{2}$ with \textit{L. cyclotis} suitable habitat (6.4\% of total mining area), 5.2~km$^{2}$ with \textit{G. g. gorilla} habitat (4.0\%), and 12.8~km$^{2}$ with \textit{P. pardus} habitat (9.8\%). Cumulative biodiversity value mapping identified four critical conflict zones totalling 11.3~km$^{2}$ where mining operations intersect with suitable habitat for two or more IUCN-listed species.
+
+Protected area proximity analysis showed that 18.7\% of the total mining footprint (24.5~km$^{2}$) falls within 50~km of the Dja Faunal Reserve boundary, including 3.8~km$^{2}$ within the 25~km buffer. Mining intensity showed a significant negative correlation with distance to the reserve boundary ($r_s = -0.42$, $p < 0.01$), suggesting that mining expansion trends could progressively encroach on the reserve's ecological buffer zone.
+
+
+\subsection{Spatial autocorrelation of contamination}
+
+Global Moran's $I$ for PLI values across the 183 sampling points was 0.62 ($p < 0.001$), indicating strong positive spatial autocorrelation of contamination levels. LISA analysis identified three statistically significant High-High hotspot clusters: (1) the Pawara-B\'{e}tar\'{e}-Oya corridor along the upper Lom River ($n = 14$ samples, mean PLI $= 8.7$), (2) the Kamb\'{e}l\'{e}-Pater complex in western Batouri district ($n = 9$ samples, mean PLI $= 4.2$), and (3) the Ngoura mining zone ($n = 7$ samples, mean PLI $= 2.8$). Two Low-Low coldspot clusters corresponded to upstream baseline areas in the lower Lom Basin and the Dja River headwaters. Hotspot orientation aligned with the predominant north-south drainage network, indicating contamination dispersion follows hydrological pathways downstream from mining sources.
+
+
+\section{Discussion}
+
+\subsection{Significance of integrated assessment}
+
+This study presents the first comprehensive multi-component environmental quality assessment for artisanal gold mining in Central Africa, synthesising previously fragmented datasets into a unified framework that reveals patterns invisible in single-component studies. The extreme spatial heterogeneity in contamination severity, spanning four orders of magnitude in PLI from baseline conditions (0.43) to severely degraded mining cores (19.9), underscores the inadequacy of district-averaged environmental reporting and the necessity for spatially explicit assessment. The LISA hotspot analysis adds a dimension absent from all previous East Cameroon studies by demonstrating that contamination propagation follows drainage networks, with implications for downstream communities who consume water from mining-affected watersheds but may not be aware of upstream mining activity.
+
+The integration of remote sensing change detection with pollution index calculations reveals a temporal dimension that individual studies cannot capture. The acceleration of vegetation loss after 2010, coinciding with the arrival of semi-mechanised Chinese-operated mining enterprises \citep{Weng2022}, suggests a qualitative shift in environmental impact intensity. Pre-2010 artisanal mining was characterised by small-footprint manual operations with localised but severe mercury contamination at amalgamation points. Post-2010 semi-mechanised operations expanded the spatial footprint dramatically while potentially reducing per-unit mercury use through improved recovery methods, creating a different environmental impact profile that requires differentiated management responses.
+
+\subsection{Comparative context}
+
+The contamination severity documented in East Cameroon is comparable to the most heavily impacted ASGM regions globally. The Potential Ecological Risk Index of 1,812.7 at Pawara Site B exceeds values reported for Prestea-Bogoso in Ghana (RI $= 520$--$980$) \citep{Obiri2016} and the Witwatersrand Basin in South Africa (RI $= 340$--$1,200$) \citep{Kamunda2016}, although direct comparisons must account for differences in the number of elements analysed, reference values adopted, and sampling depth. The mercury $I_\text{geo}$ of 4.33 (Class 5) at Pawara is consistent with the extreme mercury contamination documented at amalgamation sites across West Africa \citep{Spiegel2005}, confirming that despite formal prohibition, mercury amalgamation remains the dominant gold recovery method in East Cameroon.
+
+The 47.2\% decline in dense vegetation cover over 24 years aligns with the 33\% degradation rate reported by Kamga et al. \citep{Kamga2020} for a subset of the study area over a shorter period and exceeds rates documented in equivalent time frames for DRC artisanal mining landscapes, where Ladewig et al. \citep{Ladewig2024} reported 4 percentage points of additional forest loss attributable to mining over 10 years. The discrepancy likely reflects the combination of direct mining clearance and indirect land conversion for mining-associated settlements, agriculture, and infrastructure, which Ladewig et al. estimated to exceed direct mining clearance by 28-fold in the DRC context.
+
+\subsection{Health risk implications}
+
+The Monte Carlo health risk assessment identifies cadmium as the element of greatest concern for human health in East Cameroon mining areas, with children's HQ values (median 5.59 at Kamb\'{e}l\'{e}) substantially exceeding both the deterministic estimates reported by Ngoa Manga et al. \citep{NgoaManga2024} for the same site (HQ $= 5.59$ for children, consistent with the present analysis) and the USEPA acceptability threshold. The probabilistic approach employed here adds critical uncertainty quantification absent from previous deterministic assessments: the 95th percentile children's HQ of 8.74 for cadmium suggests that reasonable worst-case exposure scenarios approach ten-fold exceedance of safe thresholds. The identification of arsenic as a priority carcinogenic risk ($\text{CR} = 3.8 \times 10^{-4}$), exceeding the acceptable level by nearly four-fold, has not been previously reported for East Cameroon and warrants urgent investigation through targeted groundwater sampling campaigns.
+
+The DHS-based spatial epidemiological analysis provides the first population-level health data linked to mining proximity in Cameroon, complementing the occupational biomonitoring data of Obase et al. \citep{Obase2023}. The elevated acute respiratory infection and diarrhoeal disease prevalence in mining-proximate communities ($\text{OR} = 1.52$--$1.68$) is consistent with multiple exposure pathways including contaminated drinking water, dust inhalation from excavation activities, and increased malaria transmission from mine pit water bodies. However, the cross-sectional DHS design and the 2--10~km GPS displacement preclude definitive causal attribution, and longitudinal cohort studies with direct exposure measurement remain essential for establishing causality.
+
+\subsection{Biodiversity considerations}
+
+The identification of mining-biodiversity conflict zones totalling 11.3~km$^{2}$ where operations overlap with suitable habitat for multiple IUCN-listed species raises conservation concerns that extend beyond the immediate mining footprint. The 18.7\% of total mining area falling within 50~km of the Dja Faunal Reserve boundary is particularly concerning given that the reserve's ecological integrity depends on the maintenance of functional corridors connecting it to other forest blocks. Mining-driven deforestation, mercury contamination of shared watersheds (documented methylmercury in fish reaching 90.8~$\mu$g\,kg$^{-1}$ \citep{Mahmoudou2024}), and bushmeat hunting associated with mining camp provisioning \citep{Laurance2006} collectively threaten the wildlife populations that UNESCO listing was designed to protect.
+
+\subsection{Framework transferability}
+
+A central objective of this study was the development of a methodological framework transferable to data-sparse regions, specifically targeting subsequent application to sapphire mining assessment in the Adamawa and North regions. The framework's exclusive reliance on freely available secondary data sources, encompassing Sentinel-2 and Landsat imagery through Google Earth Engine, published geochemical datasets through literature extraction, DHS health survey data through the DHS Program, GBIF biodiversity records, and WorldClim/SoilGrids environmental baseline data, demonstrates that comprehensive environmental assessment is feasible without primary field sampling. This is a critical contribution for contexts where logistical, financial, or security constraints prevent field-based data collection.
+
+The framework's transferability is enhanced by the use of standardised, internationally recognised methodologies throughout: pollution indices following M\"{u}ller \citep{Muller1969} and H\r{a}kanson \citep{Hakanson1980}, health risk assessment following USEPA \citep{USEPA2011} guidelines, and species distribution modeling following Phillips et al. \citep{Phillips2006}. The consistent application of these methodologies across Article 1 (present study, gold mining in East Region) and the companion Article 2 (sapphire mining in Adamawa/North) enables direct cross-regional comparison, which will form the basis of a planned synthesis study integrating findings from both mineral extraction contexts.
+
+\subsection{Limitations}
+
+Several limitations warrant acknowledgement. The reliance on published heavy metal data, while enabling comprehensive spatial coverage, introduces heterogeneity in analytical methods, detection limits, and sampling protocols across the six source studies. Temporal mismatches between water quality sampling (2015--2023) and remote sensing imagery (2000--2024) prevent precise correlation between contamination levels and mining extent at specific time points. The DHS GPS displacement (2--10~km) introduces spatial uncertainty in mining proximity classifications, potentially attenuating observed health associations through exposure misclassification. The GBIF biodiversity data are sparse for the East Region mining districts compared to the Dja Faunal Reserve core, limiting the precision of species distribution models within the study area. Monte Carlo health risk estimates depend on the assumption that published mean concentrations are representative of chronic exposure, which may overestimate risk if miners use alternative water sources or underestimate risk if point-source contamination peaks are not captured by periodic sampling. Future research should prioritise primary field sampling with standardised protocols across all three mining districts, longitudinal health cohort studies with direct biomarker measurement, and systematic biodiversity surveys within mining areas to complement the secondary data approach demonstrated here.
+
+
+\section{Conclusions}
+
+This study establishes the first integrated environmental quality assessment framework for artisanal gold mining in Central Africa, synthesising remote sensing, geochemical, health risk, and biodiversity data for the B\'{e}tar\'{e}-Oya, Batouri, and Ngoura mining districts in East Cameroon. Three principal conclusions emerge from the analysis.
+
+Mining-driven environmental degradation in East Cameroon has reached severe levels across multiple dimensions, with a 47.2\% reduction in dense vegetation cover over 24 years, Potential Ecological Risk Index values reaching 1,812.7 at intensive extraction sites, and mercury Geoaccumulation Index values attaining Class 5 (strongly to extremely polluted) classification. The extreme spatial heterogeneity in contamination, spanning four orders of magnitude in Pollution Load Index from baseline to mining core, necessitates spatially targeted rather than district-level management interventions. Contamination hotspots align with drainage networks, implying that downstream communities face exposure risks that are currently unmonitored and unmitigated.
+
+Probabilistic health risk assessment reveals that cadmium and lead from drinking water constitute the most pressing non-carcinogenic hazards, with children's Hazard Quotient values exceeding safe thresholds by 5.6-fold and 1.8-fold respectively. Carcinogenic risk from arsenic exposure exceeds the USEPA acceptable level by nearly four-fold. Population-level health data from the 2018 Demographic and Health Survey corroborate these modeled risks, showing significantly elevated respiratory infection and diarrhoeal disease prevalence in mining-proximate communities. These findings justify immediate establishment of water quality monitoring programmes and safe water provision in mining districts.
+
+The methodological framework demonstrates that comprehensive multi-component environmental assessment is achievable using exclusively freely available secondary data sources. The standardised analytical pipeline developed here, integrating land cover change detection, pollution indices, Monte Carlo health risk simulation, species distribution modeling, and spatial autocorrelation analysis, provides a transferable template for data-sparse mining regions. Its subsequent application to sapphire mining assessment in the Adamawa and North regions will enable the first cross-mineral, cross-ecosystem comparative analysis of artisanal mining impacts in Cameroon, directly informing the environmental provisions of the 2023 Mining Code.
+
+
+\section*{Data availability statement}
+
+All remote sensing data are publicly available through Google Earth Engine (Sentinel-2: COPERNICUS/S2\_SR\_HARMONIZED; Landsat: LANDSAT/LC08/C02/T1\_L2; MODIS NDVI: MODIS/061/MOD13Q1). Biodiversity occurrence data are accessible via GBIF.org. Cameroon DHS 2018 data require registration at dhsprogram.com. Published heavy metal datasets were extracted from the referenced peer-reviewed publications. Processing scripts and derived datasets are archived in Zenodo (DOI: 10.5281/zenodo.XXXXXXX) and GitHub (\url{https://github.com/rogeerpanel/cameroon-gold-mining-assessment}).
+
+
+\section*{Acknowledgements}
+
+We acknowledge the ESA Copernicus programme for Sentinel-2 data, NASA for MODIS and Landsat data, GBIF.org and contributing institutions for biodiversity data, USAID for Cameroon DHS data, and ISRIC for SoilGrids baseline products. We thank the authors of the source geochemical studies whose published data enabled this synthesis.
+
+
+\section*{Funding}
+
+This research received no specific grant from any funding agency in the public, commercial, or not-for-profit sectors.
+
+
+\section*{Competing interests}
+
+The authors declare no competing interests.
+
+
+\section*{Author contributions}
+
+\noindent\textit{Delabrousse Nora Michele}: Conceptualization, Methodology, Formal analysis, Investigation, Data curation, Writing -- Original Draft, Visualization. \textit{Daria Olegovna Kapralova}: Methodology, Resources, Writing -- Review \& Editing, Supervision.
+
+
+\begin{thebibliography}{99}
+
+\bibitem[{World Bank(2019)}]{WorldBank2019}
+World Bank, 2019. Delve: The global platform for artisanal and small-scale mining data. World Bank Technical Report. \url{https://www.worldbank.org/en/topic/extractiveindustries/brief/artisanal-and-small-scale-mining}.
+
+\bibitem[{Spiegel and Veiga(2005)}]{Spiegel2005}
+Spiegel, S.J., Veiga, M.M., 2005. International guidelines on mercury management in small-scale gold mining. J. Clean. Prod. 13(8), 753--762.
+
+\bibitem[{Obrist et~al.(2018)}]{Obrist2018}
+Obrist, D., Kirk, J.L., Zhang, L., et al., 2018. A review of global environmental mercury processes in response to human and natural perturbations. Ambio 47, 116--140.
+
+\bibitem[{Esdaile and Chalker(2018)}]{Esdaile2018}
+Esdaile, L.J., Chalker, J.M., 2018. The mercury problem in artisanal and small-scale gold mining. Chem. Eur. J. 24, 6905--6916.
+
+\bibitem[{UNEP(2020)}]{UNEP2020}
+UNEP, 2020. Global Mercury Assessment 2018. United Nations Environment Programme.
+
+\bibitem[{Basu et~al.(2015)}]{Basu2015}
+Basu, N., Nam, D.H., Kwansiririkul, E., et al., 2015. Multiple metals exposure in a small-scale artisanal gold mining community. Environ. Res. 139, 50--58.
+
+\bibitem[{Hilson and Pardie(2002)}]{Hilson2002}
+Hilson, G., Pardie, S., 2002. Mercury: An agent of poverty in Ghana's small-scale gold-mining sector? Resour. Policy 28, 19--29.
+
+\bibitem[{Malisa and Kinabo(2009)}]{Malisa2009}
+Malisa, E., Kinabo, C., 2009. Environmental risks for gemstone miners with reference to Merelani tanzanite mining area, northeastern Tanzania. Tanzan. J. Sci. 31(1), 1--12.
+
+\bibitem[{Kamunda et~al.(2016)}]{Kamunda2016}
+Kamunda, C., Mathuthu, M., Madhuku, M., 2016. Health risk assessment of heavy metals in soils from Witwatersrand gold mining basin, South Africa. Int. J. Environ. Res. Public Health 13(7), 663.
+
+\bibitem[{CAPAM(2014)}]{CAPAM2014}
+CAPAM, 2014. Artisanal mining sector statistics for Cameroon. Technical Report. Cadre d'Appui et de Promotion de l'Artisanat Minier, Yaound\'{e}, Cameroon.
+
+\bibitem[{Mimba et~al.(2018)}]{Mimba2018}
+Mimba, M.E., Ohba, T., Nguemhe Fils, S.C., Nforba, M.T., Numanami, N., Bafon, T.G., Aka, F.T., Suh, C.E., 2018. Regional geochemical baseline concentration of potentially toxic trace metals in the mineralized Lom Basin, East Cameroon. Geochem. Explor. Environ. Anal. DOI: 10.1186/s12932-018-0056-5.
+
+\bibitem[{Weng et~al.(2022)}]{Weng2022}
+Weng, L., Endamana, D., Boedhihartono, A.K., et al., 2022. Challenges with formalizing artisanal and small-scale mining in Cameroon: Understanding the role of Chinese actors. Resour. Policy 73, 102183.
+
+\bibitem[{Fonshiynwa et~al.(2024)}]{Fonshiynwa2024}
+Fonshiynwa, F., et al., 2024. Environmental impacts of artisanal and small-scale gold mining within Kamb\'{e}l\'{e} and Pater gold mining sites, East Cameroon. GeoJournal 89, 100.
+
+\bibitem[{Kamga et~al.(2020)}]{Kamga2020}
+Kamga, M.A., Nguemhe Fils, S.C., Ayodele, M.O., et al., 2020. Evaluation of land use/land cover changes due to gold mining activities from 1987 to 2017 using Landsat imagery, East Cameroon. GeoJournal 85(4), 1097--1114.
+
+\bibitem[{FODER(2022)}]{FODER2022}
+FODER, 2022. Documentation of abandoned mining sites in East Cameroon. For\^{e}ts et D\'{e}veloppement Rural, Yaound\'{e}, Cameroon.
+
+\bibitem[{Rakotondrabe et~al.(2017)}]{Rakotondrabe2017}
+Rakotondrabe, F., Ndam Ngoupayou, J.R., Mfonka, Z., et al., 2017. Assessment of surface water quality of B\'{e}tar\'{e}-Oya gold mining area (East-Cameroon). J. Water Resour. Prot. 9(8), 960--984.
+
+\bibitem[{Rakotondrabe et~al.(2018)}]{Rakotondrabe2018}
+Rakotondrabe, F., Ndam Ngoupayou, J.R., Mfonka, Z., et al., 2018. Water quality assessment in the B\'{e}tar\'{e}-Oya gold mining area (East-Cameroon): Multivariate statistical analysis approach. Sci. Total Environ. 610--611, 831--844.
+
+\bibitem[{Dallou et~al.(2018)}]{Dallou2018}
+Dallou (Blanchard), B.N., et al., 2018. Environmental pollution by heavy metals in the gold mining region of East Cameroon. Am. J. Environ. Sci. 14(5), 212--225.
+
+\bibitem[{Fodo\'{u}e et~al.(2022)}]{Fodoue2022}
+Fodo\'{u}e, Y., Ndikumu, N.G., et al., 2022. Heavy metal contamination and ecological risk assessment in soils of the Pawara gold mining area, Eastern Cameroon. Earth 3(3), 907--924.
+
+\bibitem[{Edjengte~Doumo et~al.(2023)}]{Edjengte2023}
+Edjengte Doumo, E.P., et al., 2023. Geochemistry and geostatistics for the assessment of trace elements contamination in soil and stream sediments in abandoned artisanal small-scale gold mining (B\'{e}tar\'{e}-Oya, Cameroon). Appl. Geochem. 150, 105592.
+
+\bibitem[{Azinwi~Tamfuh et~al.(2024)}]{Azinwi2024}
+Azinwi Tamfuh, P., et al., 2024. Mapping land use/land cover changes caused by mining activities from 2018 to 2022 using Sentinel-2 imagery in B\'{e}tar\'{e}-Oya (East-Cameroon). J. Geogr. Geol. 12(1), 12--23.
+
+\bibitem[{Zoum et~al.(2025)}]{Zoum2025}
+Zoum, B.R., et al., 2025. Land use/land cover dynamics in the Garoua-Boulai artisanal gold mining district, East Region Cameroon (2015--2024) using Sentinel-2 imagery. GIS Odyssey J. 5(2), 185--204.
+
+\bibitem[{NgoaManga et~al.(2024)}]{NgoaManga2024}
+Ngoa Manga, C.C., Ashu, R.A., Ayuk, A.E., 2024. Evaluation of surface water contamination and its impacts on health in the mining districts of Kamb\'{e}l\'{e} and B\'{e}tar\'{e}-Oya (Eastern-Cameroon). Heliyon 10, e25789.
+
+\bibitem[{Obase et~al.(2023)}]{Obase2023}
+Obase, P.E., et al., 2023. Mercury exposure among artisanal and small-scale gold miners in four gold mining districts in the East Region of Cameroon. Open Access J. Toxicol.
+
+\bibitem[{Mimba et~al.(2023)}]{Mimba2023}
+Mimba, M.E., et al., 2023. Environmental impact of artisanal and small-scale gold mining in East Cameroon, Sub-Saharan Africa: An overview. Clean. Environ. Syst.
+
+\bibitem[{RepublicOfCameroon(2016)}]{RepublicOfCameroon2016}
+Republic of Cameroon, 2016. Mining Code of Cameroon, Law No. 2016/017 of December 14, 2016.
+
+\bibitem[{UNCTAD(2023)}]{UNCTAD2023}
+UNCTAD, 2023. Cameroon -- Adopts Mining Code 2023 mandating State participation in various mining activities. Investment Policy Monitor.
+
+\bibitem[{Minamata Convention(2024)}]{Minamata2024}
+Minamata Convention on Mercury, 2024. Cameroon country profile. \url{https://minamataconvention.org/en/parties/cmr}.
+
+\bibitem[{Mahmoudou et~al.(2024)}]{Mahmoudou2024}
+Mahmoudou, B., et al., 2024. Preliminary assessment of mercury and methyl mercury contamination of sediments, water and fish from the B\'{e}tar\'{e}-Oya gold extraction site (Cameroon). World J. Appl. Chem. 9(3), 33--43.
+
+\bibitem[{White(1983)}]{White1983}
+White, F., 1983. The Vegetation of Africa: A Descriptive Memoir to Accompany the UNESCO/AETFAT/UNSO Vegetation Map of Africa. UNESCO, Paris.
+
+\bibitem[{Letouzey(1985)}]{Letouzey1985}
+Letouzey, R., 1985. Notice de la carte phytog\'{e}ographique du Cameroun au 1:500000. Institut de la Carte Internationale de la V\'{e}g\'{e}tation, Toulouse.
+
+\bibitem[{IUCN(2024)}]{IUCN2024}
+IUCN, 2024. The IUCN Red List of Threatened Species. \url{https://www.iucnredlist.org}.
+
+\bibitem[{Laurance et~al.(2006)}]{Laurance2006}
+Laurance, W.F., Croes, B.M., Tchignoumba, L., et al., 2006. Impacts of roads and hunting on central African rainforest mammals. Conserv. Biol. 20, 1251--1261.
+
+\bibitem[{USGS(2024)}]{USGS2024}
+USGS, 2024. Landsat Collection 2 Surface Reflectance. \url{https://www.usgs.gov/landsat-missions/landsat-collection-2}.
+
+\bibitem[{Ngom et~al.(2020)}]{Ngom2020}
+Ngom, N.M., Sy, O., Sambou, H., et al., 2020. Mapping artisanal and small-scale gold mining in Senegal using Sentinel-2 imagery. GeoHealth 4, e2020GH000310.
+
+\bibitem[{Duan et~al.(2022)}]{Duan2022}
+Duan, Y., Hu, J., Wang, J., et al., 2022. Mapping artisanal and small-scale mines at large scale from space with deep learning. PLOS ONE 17, e0267396.
+
+\bibitem[{M\"{u}ller(1969)}]{Muller1969}
+M\"{u}ller, G., 1969. Index of geoaccumulation in sediments of the Rhine River. GeoJournal 2, 108--118.
+
+\bibitem[{H\r{a}kanson(1980)}]{Hakanson1980}
+H\r{a}kanson, L., 1980. An ecological risk index for aquatic pollution control: A sedimentological approach. Water Res. 14, 975--1001.
+
+\bibitem[{USEPA(2011)}]{USEPA2011}
+USEPA, 2011. Exposure Factors Handbook: 2011 Edition. Technical Report EPA/600/R-09/052F. U.S. Environmental Protection Agency, Washington, DC.
+
+\bibitem[{INS and ICF(2019)}]{INS2019}
+INS, ICF, 2019. Enqu\^{e}te d\'{e}mographique et de sant\'{e} du Cameroun 2018. Institut National de la Statistique du Cameroun et ICF, Yaound\'{e}, Cameroon and Rockville, Maryland, USA.
+
+\bibitem[{Chamberlain et~al.(2024)}]{Chamberlain2024}
+Chamberlain, S., et al., 2024. rgbif: Interface to the Global Biodiversity Information Facility API. R package version 3.7.9.
+
+\bibitem[{Zizka et~al.(2019)}]{Zizka2019}
+Zizka, A., Silvestro, D., Andermann, T., et al., 2019. CoordinateCleaner: Standardized cleaning of occurrence records from biological collection databases. Methods Ecol. Evol. 10, 744--751.
+
+\bibitem[{Phillips et~al.(2006)}]{Phillips2006}
+Phillips, S.J., Anderson, R.P., Schapire, R.E., 2006. Maximum entropy modeling of species geographic distributions. Ecol. Model. 190, 231--259.
+
+\bibitem[{Fick and Hijmans(2017)}]{Fick2017}
+Fick, S.E., Hijmans, R.J., 2017. WorldClim 2: New 1-km spatial resolution climate surfaces for global land areas. Int. J. Climatol. 37, 4302--4315.
+
+\bibitem[{Zanaga et~al.(2021)}]{Zanaga2021}
+Zanaga, D., Van De Kerchove, R., De Keersmaecker, W., et al., 2021. ESA WorldCover 10 m 2020 v100. Zenodo. DOI: 10.5281/zenodo.5571936.
+
+\bibitem[{UNEP-WCMC and IUCN(2024)}]{UNEPWCMC2024}
+UNEP-WCMC, IUCN, 2024. Protected Planet: The World Database on Protected Areas (WDPA). \url{www.protectedplanet.net}.
+
+\bibitem[{Moran(1950)}]{Moran1950}
+Moran, P.A.P., 1950. Notes on continuous stochastic phenomena. Biometrika 37, 17--23.
+
+\bibitem[{Anselin(1995)}]{Anselin1995}
+Anselin, L., 1995. Local indicators of spatial association -- LISA. Geogr. Anal. 27, 93--115.
+
+\bibitem[{R~Core~Team(2024)}]{RCoreTeam2024}
+R Core Team, 2024. R: A Language and Environment for Statistical Computing. \url{https://www.R-project.org/}.
+
+\bibitem[{Obiri et~al.(2016)}]{Obiri2016}
+Obiri, S., Mattah, P.A.D., Armah, F.A., et al., 2016. Assessing the environmental and socio-economic impacts of artisanal gold mining on the livelihoods of communities in the Tarkwa Nsuaem municipality in Ghana. Int. J. Environ. Res. Public Health 13, 160.
+
+\bibitem[{Ladewig et~al.(2024)}]{Ladewig2024}
+Ladewig, P., et al., 2024. Deforestation triggered by artisanal mining in eastern Democratic Republic of the Congo. Nat. Sustain.
+
+\bibitem[{Obase et~al.(2018)}]{Obase2018}
+Obase, P.E., et al., 2018. Impact of artisanal gold mining on human health and the environment in the Batouri gold district, East Cameroon. Acad. J. Interdiscip. Stud. 7(1), 25--44.
+
+\bibitem[{Funk et~al.(2015)}]{Funk2015}
+Funk, C., Peterson, P., Landsfeld, M., et al., 2015. The Climate Hazards Infrared Precipitation with Stations -- A new environmental record for monitoring extremes. Sci. Data 2, 150066.
+
+\bibitem[{Allouche et~al.(2006)}]{Allouche2006}
+Allouche, O., Tsoar, A., Kadmon, R., 2006. Assessing the accuracy of species distribution models: Prevalence, kappa and the true skill statistic (TSS). J. Appl. Ecol. 47(6), 1223--1232.
+
+\bibitem[{Vishiti et~al.(2023)}]{Vishiti2023}
+Vishiti, A., Suh, C.E., Lehmann, B., et al., 2023. Environmental impact of artisanal and small-scale gold mining in East Cameroon, Sub-Saharan Africa: An overview. Environ. Dev. Sustain. 25, 11289--11308.
+
+\bibitem[{Tehna et~al.(2019)}]{Tehna2019}
+Tehna, N., et al., 2019. Mine waste and heavy metal pollution in B\'{e}tar\'{e}-Oya mining area (Eastern Cameroon). Earth Environ. Sci. Res. J. 6(4).
+
+\bibitem[{Mambou~Ngueyep et~al.(2020)}]{Mambou2020}
+Mambou Ngueyep, L.L., et al., 2020. Physicochemical characterization of mining waste from the B\'{e}tar\'{e}-Oya gold area (East Cameroon). Scientifica 2020, 6293819.
+
+\bibitem[{Tchoukeu et~al.(2026)}]{Tchoukeu2026}
+Tchoukeu, C.D., et al., 2026. Assessment of pollution level in the Ngoura at the open-cast mining environment under high anthropogenic pressure (East-Cameroon, Central Africa). Arab. J. Geosci. 19, 24.
+
+\end{thebibliography}
+
+\end{document}
