@@ -6,7 +6,7 @@ transferable methodology for gemstone (gold, sapphire) mining impact evaluation.
 
 This repository accompanies the manuscript:
 
-> **Anaedevha, R. N., Delabrousse, N. M., & Kapralova, D. O. (2026).**
+> **Delabrousse, N. M., & Kapralova, D. O. (2026).**
 > *Environmental Quality Assessment and Health Risk Modeling in Artisanal Mining
 > Landscapes of East Cameroon: Establishing a Transferable Framework for Gemstone
 > Mining Impact Evaluation.* Environmental Science and Pollution Research.
